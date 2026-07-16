@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nupur Jaiswal — Data Science Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1220;
+    --surface:#121B2E;
+    --surface-2:#182240;
+    --line:#243252;
+    --text:#E9ECF4;
+    --muted:#8B96AF;
+    --teal:#3FD8B4;
+    --amber:#F4A94A;
+    --coral:#FF7A6E;
+    --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden;}
+  ::selection{background:var(--teal);color:#08131A;}
+  h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;font-weight:600;letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+  section{padding:110px 0;}
+  @media (max-width:720px){ section{padding:72px 0;} .wrap{padding:0 20px;} }
+
+  .grid-bg{
+    position:fixed;inset:0;z-index:-1;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,18,32,0.78);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  nav.wrap{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .logo{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px;}
+  .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 10px var(--teal);}
+  .navlinks{display:flex;gap:32px;font-size:14px;color:var(--muted);}
+  .navlinks a{transition:color .2s;}
+  .navlinks a:hover{color:var(--text);}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px;}
+  .nav-social{display:flex;align-items:center;gap:16px;}
+  .nav-social a{color:var(--muted);transition:color .2s;display:flex;}
+  .nav-social a:hover{color:var(--teal);}
+  .nav-cta{font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--teal);color:#08131A;padding:9px 18px;border-radius:8px;font-weight:600;}
+  .navtoggle{display:none;background:none;border:1px solid var(--line);color:var(--text);width:40px;height:40px;border-radius:8px;font-size:18px;}
+  @media (max-width:860px){ .navlinks{display:none;} .navtoggle{display:block;} }
+  @media (max-width:520px){ .nav-social{display:none;} }
+
+  .hero{padding-top:170px;padding-bottom:90px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;}
+  @media (max-width:900px){ .hero{grid-template-columns:1fr;padding-top:130px;} }
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--teal);display:flex;align-items:center;gap:10px;margin-bottom:22px;}
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--teal);}
+  .hero h1{font-size:clamp(38px,5.6vw,60px);line-height:1.05;margin-bottom:20px;}
+  .hero h1 span{color:var(--teal);}
+  .hero p.lead{font-size:18px;color:var(--muted);max-width:520px;margin-bottom:34px;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px;}
+  .btn{padding:13px 24px;border-radius:9px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;transition:transform .15s, border-color .2s;cursor:pointer;}
+  .btn-primary{background:var(--teal);color:#08131A;border:1px solid var(--teal);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--line);color:var(--text);background:transparent;}
+  .btn-ghost:hover{border-color:var(--teal);color:var(--teal);transform:translateY(-2px);}
+  .stack-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);border:1px solid var(--line);padding:6px 12px;border-radius:20px;}
+
+  /* HERO TERMINAL GRAPHIC */
+  .terminal-card{background:#0E1626;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:0 30px 60px -30px rgba(0,0,0,0.6);}
+  .terminal-bar{display:flex;align-items:center;gap:14px;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--line);}
+  .tdot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  .tdot.r{background:#FF7A6E;}
+  .tdot.y{background:#F4A94A;}
+  .tdot.g{background:#3FD8B4;}
+  .tdots{display:flex;gap:7px;}
+  .ttitle{font-size:12px;color:var(--muted);}
+  .terminal-body{padding:24px 22px 28px;font-size:13.5px;line-height:1.9;min-height:260px;}
+  .tline{opacity:0;white-space:pre-wrap;animation:tfade .5s ease forwards;}
+  .tline.prompt-line{color:var(--text);}
+  .tline .prompt{color:var(--teal);margin-right:8px;}
+  .tline.out{color:var(--muted);}
+  .tline .ok{color:var(--teal);}
+  .tline .hl{color:var(--amber);font-weight:600;}
+  .tline .path{color:var(--coral);}
+  .tline:nth-child(1){animation-delay:.3s;}
+  .tline:nth-child(2){animation-delay:1.0s;}
+  .tline:nth-child(3){animation-delay:1.5s;}
+  .tline:nth-child(4){animation-delay:2.4s;}
+  .tline:nth-child(5){animation-delay:2.9s;}
+  .tline:nth-child(6){animation-delay:3.4s;}
+  .tline:nth-child(7){animation-delay:4.2s;}
+  @keyframes tfade{to{opacity:1;}}
+  .cursor{display:inline-block;width:8px;height:15px;background:var(--teal);margin-left:6px;animation:blink 1s step-end infinite;vertical-align:middle;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .sec-head{margin-bottom:52px;}
+  .sec-head .eyebrow::before{background:var(--amber);}
+  .sec-head .eyebrow{color:var(--amber);}
+  .sec-head h2{font-size:clamp(28px,3.6vw,38px);}
+  .sec-head p{color:var(--muted);max-width:600px;margin-top:12px;font-size:16px;}
+
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+  @media (max-width:800px){.about-grid{grid-template-columns:1fr;gap:36px;}}
+  .about-grid p{color:var(--muted);margin-bottom:16px;font-size:16px;}
+  .about-grid strong{color:var(--text);}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .stat-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;}
+  .stat-card .num{font-family:'Space Grotesk',sans-serif;font-size:32px;color:var(--teal);font-weight:700;}
+  .stat-card .lbl{font-size:13px;color:var(--muted);margin-top:4px;}
+
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:800px){.skills-grid{grid-template-columns:1fr;}}
+  .skill-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;}
+  .skill-card h4{font-size:14px;font-family:'JetBrains Mono',monospace;color:var(--amber);margin-bottom:16px;letter-spacing:.03em;text-transform:uppercase;}
+  .skill-bar-row{margin-bottom:13px;}
+  .skill-bar-row:last-child{margin-bottom:0;}
+  .skill-bar-row .lbl{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:var(--text);}
+  .skill-bar-row .lbl span:last-child{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;}
+  .bar-track{height:6px;background:var(--surface-2);border-radius:4px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--amber));border-radius:4px;width:0;transition:width 1.2s ease;}
+
+  /* PROJECTS */
+  .stage-block{margin-bottom:56px;}
+  .stage-block:last-child{margin-bottom:0;}
+  .stage-label{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+  .stage-label .num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--bg);background:var(--teal);width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .stage-label h3{font-size:19px;}
+  .stage-label .sub{font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-left:auto;}
+  .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media (max-width:900px){.proj-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:640px){.proj-grid{grid-template-columns:1fr;}}
+  .proj-tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s, transform .2s;}
+  .proj-tile:hover{border-color:var(--teal);transform:translateY(-3px);}
+  .proj-tile h4{font-size:16px;line-height:1.3;}
+  .proj-tile .desc{font-size:13.5px;color:var(--muted);flex-grow:1;}
+  .proj-tags{display:flex;gap:6px;flex-wrap:wrap;}
+  .proj-tags span{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--teal);background:rgba(63,216,180,0.08);border:1px solid rgba(63,216,180,0.25);padding:3px 8px;border-radius:6px;}
+  .proj-metric{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--amber);}
+  .proj-links-row{display:flex;gap:14px;margin-top:4px;}
+  .proj-links-row a{font-size:12px;color:var(--muted);transition:color .2s;}
+  .proj-links-row a:hover{color:var(--teal);}
+
+  .stage-block.upcoming .proj-tile{border-style:dashed;opacity:.72;}
+  .stage-block.upcoming .proj-tags span{color:var(--amber);background:rgba(244,169,74,0.08);border-color:rgba(244,169,74,0.25);}
+  .lock-tag{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);border:1px solid rgba(244,169,74,.35);padding:2px 8px;border-radius:5px;align-self:flex-start;}
+
+  .tl{border-left:1px solid var(--line);padding-left:32px;display:flex;flex-direction:column;gap:36px;margin-left:8px;}
+  .tl-item{position:relative;}
+  .tl-item::before{content:"";position:absolute;left:-38px;top:4px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--teal);}
+  .tl-item .when{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:6px;}
+  .tl-item h4{font-size:17px;margin-bottom:4px;}
+  .tl-item p{color:var(--muted);font-size:14px;}
+
+  .contact-card{background:linear-gradient(160deg, var(--surface), var(--surface-2));border:1px solid var(--line);border-radius:20px;padding:52px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;}
+  @media (max-width:800px){.contact-card{grid-template-columns:1fr;padding:32px;}}
+  .contact-card h2{font-size:clamp(26px,3.4vw,34px);margin-bottom:14px;}
+  .contact-card p{color:var(--muted);max-width:420px;}
+  .contact-fields{display:flex;flex-direction:column;gap:14px;}
+  .field{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:13px;transition:border-color .2s;}
+  .field.live{border-style:solid;}
+  .field.live:hover{border-color:var(--teal);}
+  .field.todo{border-style:dashed;}
+  .field .k{color:var(--muted);}
+  .field .v{color:var(--text);}
+  .field a.v:hover{color:var(--teal);}
+  .field .edit{font-size:11px;color:var(--amber);border:1px solid rgba(244,169,74,.35);padding:2px 8px;border-radius:5px;}
+  .field .go{font-size:11px;color:var(--teal);border:1px solid rgba(63,216,180,.35);padding:2px 8px;border-radius:5px;}
+
+  footer{border-top:1px solid var(--line);padding:32px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  footer .f-left{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+  footer .f-links{display:flex;gap:22px;font-size:13px;color:var(--muted);align-items:center;}
+  footer .f-links a:hover{color:var(--teal);}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .tline, .reveal, .bar-fill, .cursor{animation:none !important;transition:none !important;opacity:1 !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<header>
+  <nav class="wrap">
+    <div class="logo"><span class="dot"></span>nupur.jaiswal</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-social">
+      <a href="https://github.com/NJ024/Data-Science-Portfolio" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.66.5 12.03c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56 0-.27-.01-1.16-.02-2.11-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.77.12 3.06.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .31.21.67.8.56A10.98 10.98 0 0 0 23.5 12.03C23.5 5.66 18.35.5 12 .5z"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/nupur-jaiswal/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.86 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+      </a>
+      <a href="mailto:nupurjiaswal931@gmail.com" aria-label="Email">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="M2.5 6.5l9.5 7 9.5-7"/></svg>
+      </a>
+      <a href="https://leetcode.com/u/NJ_9972/" target="_blank" rel="noopener" aria-label="LeetCode">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M13.48 2.13a1.7 1.7 0 0 1 2.44 0 1.78 1.78 0 0 1 0 2.48L11.3 9.5l1.98 1.98a1.7 1.7 0 1 1-2.4 2.4L7.4 10.4a1.78 1.78 0 0 1 0-2.5l6.08-5.77z"/><path d="M9.9 14.7l-2.9 2.75a1.78 1.78 0 0 0 0 2.5l2.9 2.75a1.7 1.7 0 0 0 2.4-2.4l-1.7-1.6 1.7-1.6a1.7 1.7 0 1 0-2.4-2.4z"/><rect x="10.5" y="10.6" width="10.2" height="2.8" rx="1.4"/></svg>
+      </a>
+    </div>
+    <a class="nav-cta" href="#contact">Get in touch</a>
+    <button class="navtoggle" aria-label="menu">☰</button>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div>
+      <div class="eyebrow">DATA SCIENCE PORTFOLIO</div>
+      <h1>Nupur Jaiswal</h1>
+      <p class="lead">Final-year B.Tech CSE (AI Specialization) student, focused on Python, SQL and Machine Learning — building clean pipelines, honest models, and visuals that hold up under scrutiny.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">View Projects →</a>
+        <a href="https://github.com/NJ024/Data-Science-Portfolio" target="_blank" rel="noopener" class="btn btn-ghost">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/nupur-jaiswal/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn ↗</a>
+      </div>
+      <div class="stack-row">
+        <span class="chip">Python</span>
+        <span class="chip">PostgreSQL / SQL</span>
+        <span class="chip">Pandas / NumPy</span>
+        <span class="chip">Scikit-learn</span>
+        <span class="chip">Matplotlib / Seaborn</span>
+        <span class="chip">NLP — learning</span>
+        <span class="chip">Deep Learning — learning</span>
+      </div>
+    </div>
+
+    <div class="terminal-card reveal">
+      <div class="terminal-bar">
+        <div class="tdots"><span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span></div>
+        <div class="ttitle mono">nupur@datasci — churn_model.py</div>
+      </div>
+      <div class="terminal-body mono">
+        <div class="tline prompt-line"><span class="prompt">$</span>python train_model.py</div>
+        <div class="tline out">Loading dataset<span class="path">customers.csv</span>... <span class="ok">done</span></div>
+        <div class="tline out">Training RandomForestClassifier...</div>
+        <div class="tline out">Validation accuracy: <span class="hl">92.4%</span> &nbsp; ROC-AUC: <span class="hl">0.89</span></div>
+        <div class="tline out">Top feature: <span class="hl">contract_type</span></div>
+        <div class="tline prompt-line"><span class="prompt">$</span>streamlit run app.py</div>
+        <div class="tline prompt-line"><span class="prompt">$</span><span class="cursor"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">01 — ABOUT</div>
+      <h2>Someone who'd rather test the hypothesis than assume it.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="reveal">
+        <p>I'm <strong>Nupur Jaiswal</strong>, an aspiring Data Scientist with a practical, project-first approach to learning — I build with real (or realistic) datasets instead of stopping at tutorials.</p>
+        <p>My work spans the full analytics loop: querying and modelling relational data in <strong>PostgreSQL / SQL</strong>, cleaning messy data with <strong>Pandas</strong> and <strong>NumPy</strong>, applying statistical reasoning before trusting a result, and training and validating models with <strong>Scikit-learn</strong>.</p>
+        <p>I'm currently extending that base into <strong>NLP</strong> and <strong>Deep Learning</strong>, with <strong>Generative AI</strong> next on the roadmap — I'd rather show a clear trajectory than overclaim skills I haven't built yet.</p>
+      </div>
+      <div class="stat-grid reveal">
+        <div class="stat-card"><div class="num">9</div><div class="lbl">Projects in progress</div></div>
+        <div class="stat-card"><div class="num">5</div><div class="lbl">On the roadmap next</div></div>
+        <div class="stat-card"><div class="num">6</div><div class="lbl">Core tools &amp; libraries</div></div>
+        <div class="stat-card"><div class="num">92%</div><div class="lbl">Best model validation score</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">02 — PROJECTS</div>
+      <h2>A staged build plan, not a random list.</h2>
+      <p>Organized by what I can build with my current stack now, versus what unlocks as NLP, Deep Learning, and GenAI come online. Links are placeholders — swap with real repo/notebook URLs as each project ships.</p>
+    </div>
+
+    <!-- STAGE 1: SQL + Stats -->
+    <div class="stage-block reveal">
+      <div class="stage-label">
+        <span class="num">1</span>
+        <h3>SQL &amp; Statistical Foundations</h3>
+        <span class="sub mono">Month 1–2</span>
+      </div>
+      <div class="proj-grid">
+        <div class="proj-tile">
+          <h4>SQL E-commerce Analytics</h4>
+          <p class="desc">Normalized orders/customers/products schema in PostgreSQL. Window functions and CTEs to answer cohort retention and revenue-by-region questions.</p>
+          <div class="proj-tags"><span>PostgreSQL</span><span>CTEs</span><span>Window Fn</span></div>
+          <div class="proj-metric">→ 15 analytical queries · cohort retention model</div>
+          <div class="proj-links-row"><a href="https://github.com/NJ024/Data-Science-Portfolio/tree/main/01-sql-ecommerce-analytics" target="_blank" rel="noopener">↗ Repo</a><a href="https://github.com/NJ024/Data-Science-Portfolio/blob/main/01-sql-ecommerce-analytics/notebook.ipynb" target="_blank" rel="noopener">↗ Notebook</a></div>
+        </div>
+        <div class="proj-tile">
+          <h4>Global Layoffs Analysis</h4>
+          <p class="desc">Cleaned a messy real-world tech layoffs dataset — duplicates, nulls, inconsistent formats — then analyzed trends by industry, country, and year.</p>
+          <div class="proj-tags"><span>Pandas</span><span>NumPy</span><span>Data Cleaning</span></div>
+          <div class="proj-metric">→ removed all duplicates · unified 3 date formats</div>
+          <div class="proj-links-row"><a href="https://github.com/NJ024/Data-Science-Portfolio/tree/main/02-global-layoffs-analysis" target="_blank" rel="noopener">↗ Repo</a><a href="https://github.com/NJ024/Data-Science-Portfolio/blob/main/02-global-layoffs-analysis/notebook.ipynb" target="_blank" rel="noopener">↗ Notebook</a></div>
+        </div>
+        <div class="proj-tile">
+          <h4>Hypothesis Testing on A/B Test Results</h4>
+          <p class="desc">Two-variant landing page test analyzed with distribution checks and a two-sample hypothesis test to confirm the conversion lift was real, not noise.</p>
+          <div class="proj-tags"><span>Statistics</span><span>Hypothesis Testing</span></div>
+          <div class="proj-metric">→ p-value 0.0004 · +2.49pp lift, 95% CI [1.11, 3.86]</div>
+          <div class="proj-links-row"><a href="https://github.com/NJ024/Data-Science-Portfolio/tree/main/03-ab-test-hypothesis-testing" target="_blank" rel="noopener">↗ Repo</a><a href="https://github.com/NJ024/Data-Science-Portfolio/blob/main/03-ab-test-hypothesis-testing/notebook.ipynb" target="_blank" rel="noopener">↗ Notebook</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAGE 2: ML core -->
+    <div class="stage-block reveal">
+      <div class="stage-label">
+        <span class="num">2</span>
+        <h3>Machine Learning Core</h3>
+        <span class="sub mono">Month 3–5</span>
+      </div>
+      <div class="proj-grid">
+        <div class="proj-tile">
+          <h4>House Price Prediction</h4>
+          <p class="desc">Regression pipeline predicting sale price from property features — feature engineering, Linear Regression vs. Random Forest Regressor, evaluated on RMSE and R².</p>
+          <div class="proj-tags"><span>Regression</span><span>Scikit-learn</span></div>
+          <div class="proj-metric">→ R² 0.971 (Random Forest) vs. 0.935 baseline</div>
+          <div class="proj-links-row"><a href="https://github.com/NJ024/Data-Science-Portfolio/tree/main/04-house-price-prediction" target="_blank" rel="noopener">↗ Repo</a><a href="https://github.com/NJ024/Data-Science-Portfolio/blob/main/04-house-price-prediction/notebook.ipynb" target="_blank" rel="noopener">↗ Notebook</a></div>
+        </div>
+        <div class="proj-tile">
+          <h4>Loan Approval Prediction</h4>
+          <p class="desc">Binary classifier on applicant financial and demographic data, with careful handling of categorical encoding and class balance in the approval outcome.</p>
+          <div class="proj-tags"><span>Classification</span><span>Feature Engineering</span></div>
+          <div class="proj-metric">→ 84% accuracy · 0.896 ROC-AUC</div>
+          <div class="proj-links-row"><a href="https://github.com/NJ024/Data-Science-Portfolio/tree/main/05-loan-approval-prediction" target="_blank" rel="noopener">↗ Repo</a><a href="https://github.com/NJ024/Data-Science-Portfolio/blob/main/05-loan-approval-prediction/notebook.ipynb" target="_blank" rel="noopener">↗ Notebook</a></div>
+        </div>
+        <div class="proj-tile">
+          <h4>Customer Segmentation</h4>
+          <p class="desc">Unsupervised RFM (Recency, Frequency, Monetary) analysis with K-Means clustering to group customers into actionable marketing segments.</p>
+          <div class="proj-tags"><span>K-Means</span><span>Unsupervised</span><span>RFM</span></div>
+          <div class="proj-metric">→ 4 actionable segments · 800 customers profiled</div>
+          <div class="proj-links-row"><a href="https://github.com/NJ024/Data-Science-Portfolio/tree/main/06-customer-segmentation" target="_blank" rel="noopener">↗ Repo</a><a href="https://github.com/NJ024/Data-Science-Portfolio/blob/main/06-customer-segmentation/notebook.ipynb" target="_blank" rel="noopener">↗ Notebook</a></div>
+        </div>
+        <div class="proj-tile">
+          <h4>Customer Churn Prediction</h4>
+          <p class="desc">Classification pipeline flagging telecom accounts likely to cancel. Logistic Regression vs. Random Forest, evaluated with confusion matrix and ROC-AUC.</p>
+          <div class="proj-tags"><span>Scikit-learn</span><span>Random Forest</span></div>
+          <div class="proj-metric">→ 67% accuracy · 0.74 ROC-AUC</div>
+          <div class="proj-links-row"><a href="https://github.com/NJ024/Data-Science-Portfolio/tree/main/07-customer-churn-prediction" target="_blank" rel="noopener">↗ Repo</a><a href="https://github.com/NJ024/Data-Science-Portfolio/blob/main/07-customer-churn-prediction/notebook.ipynb" target="_blank" rel="noopener">↗ Notebook</a></div>
+        </div>
+        <div class="proj-tile">
+          <h4>Credit Card Fraud Detection</h4>
+          <p class="desc">Highly imbalanced classification problem — used resampling and precision/recall (not accuracy) as the real measure of success, since fraud is rare by design.</p>
+          <div class="proj-tags"><span>Imbalanced Data</span><span>Precision/Recall</span></div>
+          <div class="proj-metric">→ 0.99 precision · 1.00 recall at tuned threshold</div>
+          <div class="proj-links-row"><a href="https://github.com/NJ024/Data-Science-Portfolio/tree/main/08-credit-card-fraud-detection" target="_blank" rel="noopener">↗ Repo</a><a href="https://github.com/NJ024/Data-Science-Portfolio/blob/main/08-credit-card-fraud-detection/notebook.ipynb" target="_blank" rel="noopener">↗ Notebook</a></div>
+        </div>
+        <div class="proj-tile">
+          <h4>Deploy an ML Model with Streamlit</h4>
+          <p class="desc">Took the churn model out of the notebook and into a live, interactive Streamlit app — the difference between a result and something someone can actually use.</p>
+          <div class="proj-tags"><span>Streamlit</span><span>Deployment</span></div>
+          <div class="proj-metric">→ live form → churn probability, not just a notebook</div>
+          <div class="proj-links-row"><a href="https://github.com/NJ024/Data-Science-Portfolio/tree/main/09-churn-streamlit-app" target="_blank" rel="noopener">↗ Repo</a><a href="#">↗ Live app</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAGE 3: Roadmap -->
+    <div class="stage-block upcoming reveal">
+      <div class="stage-label">
+        <span class="num" style="background:var(--amber);">3</span>
+        <h3>NLP, Deep Learning &amp; GenAI — on the roadmap</h3>
+        <span class="sub mono">Month 6–9</span>
+      </div>
+      <div class="proj-grid">
+        <div class="proj-tile">
+          <span class="lock-tag">Upcoming — NLP</span>
+          <h4>Sentiment Analysis</h4>
+          <p class="desc">Classifying text sentiment (positive/negative/neutral) on product or social media reviews.</p>
+          <div class="proj-tags"><span>NLP</span><span>Text Classification</span></div>
+        </div>
+        <div class="proj-tile">
+          <span class="lock-tag">Upcoming — NLP</span>
+          <h4>IMDb Review Classifier</h4>
+          <p class="desc">Movie review classification — from bag-of-words baselines to a proper NLP pipeline.</p>
+          <div class="proj-tags"><span>NLP</span><span>Text Classification</span></div>
+        </div>
+        <div class="proj-tile">
+          <span class="lock-tag">Upcoming — Deep Learning</span>
+          <h4>CNN Image Classifier</h4>
+          <p class="desc">Convolutional neural network built and trained from scratch for image classification.</p>
+          <div class="proj-tags"><span>CNN</span><span>Deep Learning</span></div>
+        </div>
+        <div class="proj-tile">
+          <span class="lock-tag">Upcoming — GenAI</span>
+          <h4>AI SQL Assistant</h4>
+          <p class="desc">Natural-language-to-SQL assistant — the GenAI project that plays directly to my SQL background.</p>
+          <div class="proj-tags"><span>GenAI</span><span>LLM</span><span>SQL</span></div>
+        </div>
+        <div class="proj-tile">
+          <span class="lock-tag">Upcoming — GenAI</span>
+          <h4>PDF QA Chatbot</h4>
+          <p class="desc">Retrieval-augmented chatbot that answers questions grounded in an uploaded PDF document.</p>
+          <div class="proj-tags"><span>GenAI</span><span>RAG</span></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">03 — EDUCATION &amp; CERTIFICATIONS</div>
+      <h2>How I got here.</h2>
+    </div>
+    <div class="tl reveal">
+      <div class="tl-item">
+        <div class="when mono">Final Year</div>
+        <h4>B.Tech, Computer Science Engineering — AI Specialization</h4>
+        <p>Relevant coursework: Data Structures, Statistics, Database Management, Machine Learning fundamentals.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when mono">2025 – Present</div>
+        <h4>Data Science Foundation Course — Sheryians AI School</h4>
+        <p>Python, statistics &amp; probability, hypothesis testing, Pandas, NumPy, and Machine Learning foundations.</p>
+      </div>
+      <div class="tl-item">
+        <div class="when mono">Ongoing</div>
+        <h4>PostgreSQL Practice — LeetCode</h4>
+        <p>Query optimization, joins, window functions, and relational database design, practiced through LeetCode's SQL problem set.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="wrap">
+    <div class="contact-card reveal">
+      <div>
+        <div class="eyebrow">04 — CONTACT</div>
+        <h2>Let's talk about the role.</h2>
+        <p>Open to Data Analyst / Data Science opportunities. Reach out directly or through any of the channels below.</p>
+      </div>
+      <div class="contact-fields">
+        <div class="field live"><span class="k">email</span><a class="v" href="mailto:nupurjiaswal931@gmail.com">nupurjiaswal931@gmail.com</a><span class="go">open</span></div>
+        <div class="field live"><span class="k">linkedin</span><a class="v" href="https://www.linkedin.com/in/nupur-jaiswal/" target="_blank" rel="noopener">/in/nupur-jaiswal</a><span class="go">open</span></div>
+        <div class="field live"><span class="k">github</span><a class="v" href="https://github.com/NJ024/Data-Science-Portfolio" target="_blank" rel="noopener">NJ024/Data-Science-Portfolio</a><span class="go">open</span></div>
+        <div class="field live"><span class="k">leetcode</span><a class="v" href="https://leetcode.com/u/NJ_9972/" target="_blank" rel="noopener">NJ_9972</a><span class="go">open</span></div>
+        <div class="field live"><span class="k">location</span><span class="v">Ghaziabad, Uttar Pradesh, India</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-left mono">© 2026 Nupur Jaiswal — built with intent, not templates.</div>
+    <div class="f-links">
+      <a href="https://github.com/NJ024/Data-Science-Portfolio" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/nupur-jaiswal/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://leetcode.com/u/NJ_9972/" target="_blank" rel="noopener">LeetCode</a>
+      <a href="mailto:nupurjiaswal931@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
+
+  const bars = document.querySelectorAll('.bar-fill');
+  const barIo = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.style.width = e.target.dataset.w + '%'; barIo.unobserve(e.target); } });
+  },{threshold:0.4});
+  bars.forEach(b=>barIo.observe(b));
+
+  const toggle = document.querySelector('.navtoggle');
+  const links = document.querySelector('.navlinks');
+  toggle.addEventListener('click', ()=>{
+    const open = links.style.display === 'flex';
+    links.style.display = open ? 'none' : 'flex';
+    links.style.cssText += open ? '' : 'position:fixed;top:72px;left:0;right:0;background:#0B1220;flex-direction:column;padding:24px 32px;gap:20px;border-bottom:1px solid #243252;';
+  });
+</script>
+
+</body>
+</html>
